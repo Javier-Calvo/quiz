@@ -1,7 +1,34 @@
 ﻿var path = require('path');
 
+// Como foreman start no me dice nada uso lo indicado en el URL siguiente
+// https://www.miriadax.net/web/javascript-node-js/foro/-/message_boards/view_message/34199524
+//var dbURL=process.env.DATABASE_URL||"sqlite://:@:/";
+
+// Postgres DATABASE_URL = postgres://user:passwd@host:port/database
+// SQLite   DATABASE_URL = sqlite://:@:/
+var url = process.env.DATABASE_URL.match(/(.*)\:\/\/(.*?)\:(.*)@(.*)\:(.*)\/(.*)/);
+var DB_name  = (url[6]||null);
+var user     = (url[2]||null);
+var pwd      = (url[3]||null);
+var protocol = (url[1]||null);
+var dialect  = (url[1]||null);
+var port     = (url[5]||null);
+var host     = (url[4]||null);
+var storage  = process.env.DATABASE_STORAGE;
+
 // Cargar Modelo ORM
 var Sequelize = require('sequelize');
+
+// Usar BBDD SQLite o Postgres
+var sequelize = new Sequelize(DB_name, user, pwd, 
+  { dialect:  protocol,
+    protocol: protocol,
+    port:     port,
+    host:     host,
+    storage:  storage,  // solo SQLite (.env)
+    omitNull: true      // solo Postgres
+  }      
+);
 
 // Usar BBDD SQLite:
 var sequelize = new Sequelize(null, null, null, 
