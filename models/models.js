@@ -2,7 +2,7 @@
 
 // Como foreman start no me dice nada uso lo indicado en el URL siguiente
 // https://www.miriadax.net/web/javascript-node-js/foro/-/message_boards/view_message/34199524
-//var dbURL=process.env.DATABASE_URL||"sqlite://:@:/";
+
 
 // Postgres DATABASE_URL = postgres://user:passwd@host:port/database
 // SQLite   DATABASE_URL = sqlite://:@:/
