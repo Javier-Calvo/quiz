@@ -1,4 +1,4 @@
-{
+﻿{
   "name": "quiz",
   "version": "0.0.0",
   "private": true,
@@ -17,7 +17,11 @@
     "express": "~4.12.4",
     "express-partials": "^0.3.0",
     "morgan": "~1.5.3",
+<<<<<<< HEAD
     "sequelize": "^3.3.0",
+=======
+    "sequelize": "^3.2.0",
+>>>>>>> 245f31ea9fe10babc77c75b7b6de010f39028280
     "serve-favicon": "~2.2.1",
     "sqlite3": "^3.0.8"
   }
