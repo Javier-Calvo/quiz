@@ -1,6 +1,5 @@
 var models = require('../models/models.js');
 
-<<<<<<< HEAD
 // GET /quizes/question
 exports.question = function(req, res) {
   models.Quiz.findAll().then(function(quiz) {
@@ -20,8 +19,6 @@ exports.answer = function(req, res) {
 };
 
 /******************************************************************
-=======
->>>>>>> 245f31ea9fe10babc77c75b7b6de010f39028280
 // GET /quizes/question
 exports.question = function(req, res) {
   models.Quiz.findAll().then(function(quiz) {
