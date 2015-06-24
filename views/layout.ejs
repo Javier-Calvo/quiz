@@ -22,7 +22,16 @@
 		</nav>
 		
 		<section class="main" id="s1">
-			<%- body %>  <!--  Inserta el body de la vista -->
+			<% if (errors.length) { %>
+				<span id="ErrorMsgs">
+				Corregir errores:<br/>
+				<% for (var i in errors) { %>
+					<span> <%= errors[i].message %> </span><br/>
+				<% } %>
+				</span>
+			<% } %>
+			<%- body %>
+			<!-- <div> <%- body %> </div> Pone el autor sobre el footer -->
 		</section>
 		
 		<footer class="main" id="f1">

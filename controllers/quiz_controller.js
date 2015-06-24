@@ -6,7 +6,7 @@ exports.load = function(req, res, next, quizId) {
       if (quiz) {
         req.quiz = quiz;
         next();
-      } else{next(new Error('No existe quizId=' + quizId));}
+      } else{next(new Error('No existe quizId=' + quizId));}  // Ojo al ;
     }
   ).catch(function(error){next(error);});
 };
@@ -31,7 +31,7 @@ exports.show = function(req, res) {
 	// if you wish to pass a single primary key value
 	// Cambio find por findById.  Funciona una vez rearrancado el servidor
 	// models.Quiz.findById(req.params.quizId).then(function(quiz) {
-		res.render('quizes/show', { quiz: req.quiz});
+		res.render('quizes/show', { quiz: req.quiz, errors: []});
 	//})
 };
 
@@ -42,7 +42,7 @@ exports.answer = function(req, res) {
 		if (req.query.respuesta === req.quiz.respuesta) {
 			resultado = 'Correcto';
 		} 
-		res.render('quizes/answer', { quiz: req.quiz, respuesta: resultado});
+		res.render('quizes/answer', { quiz: req.quiz, respuesta: resultado, errors: []});
 };
 
 // GET /quizes/new
@@ -50,17 +50,39 @@ exports.new = function(req, res){
 	var quiz = models.Quiz.build(// crea objeto quiz
 		{pregunta: "Pregunta", respuesta: "Respuesta"}
 	);
-	res.render('quizes/new', {quiz: quiz});
+	res.render('quizes/new', {quiz: quiz, errors: []});
 };
 
 // POST /quizes/create
 exports.create = function(req, res){
 	var quiz = models.Quiz.build( req.body.quiz );
-	
-	// guarda en DB los campos pregunta y respuesta de quiz
-	quiz.save({fields: ["pregunta", "respuesta"]}).then(function(){
-		res.redirect('/quizes');
-	}) // Redirección HTTP (URL relativo) lista de preguntas
+
+/************************* No funciona ****************************
+		var errors = quiz.validate();  // errors no tiene método then
+	if (errors)
+	{
+		var i=0; var errores=new Array();
+		for (var prop in errors) errores[i++]={message: errors[prop]};		
+		res.render('quizes/new', {quiz: quiz, errors: errores});
+	} else {
+		quiz // save: guarda en DB campos pregunta y respuesta de quiz
+		.save({fields: ["pregunta", "respuesta"]})
+		.then( function(){ res.redirect('/quizes')}) ; // res.redirect: Redirección HTTP a lista de preguntas
+	}
+*******************************************************************/
+	quiz
+	.validate()
+	.then(
+		function(err){
+			if (err) {
+				res.render('quizes/new', {quiz: quiz, errors: err.errors});
+			} else {
+				quiz // save: guarda en DB campos pregunta y respuesta de quiz
+				.save({fields: ["pregunta", "respuesta"]})
+				.then( function(){ res.redirect('/quizes')})
+			}  
+		}
+	);
 };
 
 /******************************************************************
