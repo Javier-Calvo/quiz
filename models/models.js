@@ -31,10 +31,20 @@ var sequelize = new Sequelize(DB_name, user, pwd,
 //                       {dialect: "sqlite", storage: "quiz.sqlite"}
 //                    );
 
-// Importar la definicion de la tabla Quiz en quiz.js
+// Importar la definicion de la tabla Quiz (quiz.js)
 var Quiz = sequelize.import(path.join(__dirname,'quiz'));
 
-exports.Quiz = Quiz; // exportar definición de tabla Quiz
+// Importar la definicion de la tabla Comment (comment.js)
+var comment_path = path.join(__dirname, 'comment');
+var Comment = sequelize.import(comment_path);
+
+// Definición de la relacion 1 (Quiz) a n ()Comment)
+Comment.belongsTo(Quiz);
+Quiz.hasMany(Comment);
+
+exports.Quiz = Quiz;       // exportar definición de tabla Quiz
+exports.Comment = Comment; // exportar definición de tabla Comment
+
 
 /* 
 // Parece que a partir de la versión 1.7.0 (usada en el curso) Sequelize Promises (Promesas)
