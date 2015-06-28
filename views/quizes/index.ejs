@@ -9,6 +9,7 @@ Busqueda de preguntas:
 			<tr>
 				<td><%= quizes[i].tema %></td>
 				<td><a href="quizes/<%= quizes[i].id %>"><%= quizes[i].pregunta %></a></td>
+				<% if(session.user){ %>
 				<td><a href="quizes/<%= quizes[i].id %>/edit"><button>editar</button></a></td>
 				<td>
 					<form method="post" action="quizes/<%= quizes[i].id %>?_method=delete">
@@ -17,8 +18,12 @@ Busqueda de preguntas:
 						</button>
 					</form>
 				</td>
+				<% } %>
 			</tr>
 		<% } %>
 	</table>
+	
+	<% if(session.user){ %>
 	<p><a href="/quizes/new"><button type="button">Crear pregunta.</button></a></p>
+	<% } %>
 	
